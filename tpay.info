@@ -1,0 +1,5 @@
+name = TPay Integration
+description = Provides integration with TPay services
+core = 7.x
+package = Other
+version = 7.x-1.x-dev

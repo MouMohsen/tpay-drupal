@@ -1,0 +1,373 @@
+<?php
+define("TPAY_MOBILE_UNKOWN", 0);
+define("TPAY_MOBILE_REGISTERED", 1);
+define("TPAY_MOBILE_VERIFIED", 2);
+
+include_once('tpay.api.php');
+
+/**
+ * Implements hook_menu().
+ */
+function tpay_menu() {
+  $items['admin/config/services/tpay'] = array(
+    'title' => 'TPay',
+    'description' => 'Configuration for TPay module',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('tpay_admin_form'),
+    'access arguments' => array('administer tpay settings'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'tpay.admin.inc',
+  );
+  $items['user/%/tpay'] = array(
+    'title' => t('Mobile Subscription'),
+    'page callback' => 'tpay_user_subscription_page',
+    'page arguments' => array(1),
+    'type' => MENU_LOCAL_TASK,
+    'access arguments' => array(1),
+    'access callback' => '_tpay_user_mobile_access',
+    'file' => 'tpay.pages.inc',
+  );
+  $items['tpay/subscribe'] = array(
+    'title' => t('Subscribe'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('tpay_user_subscribe_form',2),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'tpay.pages.inc',
+    'access arguments' => array('subscribe to tpay plans'),
+  );
+  $items['tpay/verify'] = array(
+    'title' => t('Confirm Subscription'),
+    'page callback' => 'tpay_user_verify_page',
+    'page arguments' => array(2),
+    'type' => MENU_LOCAL_TASK,
+    'access arguments' => array('subscribe to tpay plans'),
+    'file' => 'tpay.pages.inc',
+  );
+  $items['tpay/notifications'] = array(
+    'title' => t('Subscription Notification'),
+    'page callback' => 'tpay_notifications',
+    'type' => MENU_LOCAL_TASK,
+    'access callback' => TRUE,
+    'file' => 'tpay.pages.inc',
+  );
+
+  return $items;
+}
+
+/**
+ * Implemets hook_permission().
+ */
+function tpay_permission() {
+  return array(
+    'administer tpay settings' => array(
+      'title' => t('Administer TPay Settings'),
+      'description' => t('Administer TPay settings'),
+    ),
+    'subscribe to tpay plans' => array(
+      'title' => t('Subscribe to TPay plans'),
+      'description' => t('Subscribe to TPay plans'),
+    ),
+  );
+}
+
+/**
+ * access callback funcion for user/%/tpay
+ */
+function _tpay_user_mobile_access($uid) {
+  global $user;
+  return (user_access('subscribe to TPay plans') || ($user->uid == $uid));
+}
+
+/**
+ * Returns an associative array of user mobile registration status.
+ * @param  int $uid The id of the user
+ * @return array
+ */
+function tpay_get_user_mobile_status($uid) {
+  // query table tpay_mobiles_users and check status,
+  // return TPAY_MOBILE_UNKOWN if no record
+  // return TPAY_MOBILE_REGISTERED if status 0
+  // return TPAY_MOBILE_VERIFIED is status 1
+  return array();
+}
+
+/**
+ * Disable Password Strength element - This will disable password strength checker for the entire website
+ * @TODO It could be added as an option in Configuration
+ */
+function tpay_element_info_alter(&$types) {
+  if (isset($types['password_confirm']['#process']) && (($position = array_search('user_form_process_password_confirm', $types['password_confirm']['#process'])) !== FALSE)) {
+    unset($types['password_confirm']['#process'][$position]);
+  }
+}
+
+/**
+ * Returns a tpay object using tpay keys from module settings
+ */
+function _get_tpay_object() {
+  // @TODO: Add check for settings and return an error value (NULL? False?)
+  $username = variable_get('tpay_username');
+  $publickey = variable_get('tpay_publickey');
+  $privatekey = variable_get('tpay_privatekey');
+  $tpay = New Tpay($username, $publickey, $privatekey);
+  $tpay->staging_mode = variable_get('tpay_staging_mode', 0);
+  return $tpay;
+}
+
+/**
+* Implemets hook_field_info().
+*/
+function tpay_field_info() {
+  return array(
+    'tpay_product' => array(
+      'label' => t('TPay Product'),
+      'description' => t('TPay Products'),
+      'default_widget' => 'tpay_field',
+      'default_formatter' => 'tpay_product_default_formatter',
+    ),
+  );
+}
+
+/**
+* Implements hook_field_widget_info().
+*/
+function tpay_field_widget_info() {
+  return array(
+    'tpay_field' => array(
+      'label' => t('Select list'),
+      'field types' => array('tpay_product'),
+    ),
+  );
+}
+
+/**
+* Get an array of TPay products contains SKU & productName
+*/
+function _tpay_get_products_array($type = NULL){
+  $tpay = _get_tpay_object();
+  $products = $tpay->get_products();
+  $products_sku = $products_name = array();
+
+  if($type !== 'radios') {
+  array_push($products_sku,'');
+  array_push($products_name,'Please Select');
+  }
+
+  for ($x=0;$x<sizeof($products);$x++){
+    array_push($products_sku,$products[$x]['SKU']);
+    array_push($products_name,$products[$x]['productName']);
+  }
+
+  $products_array= array_combine($products_sku  , $products_name);
+  return $products_array;
+}
+
+/**
+* Implements hook_field_widget_form().
+*/
+function tpay_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+
+  switch ($instance['widget']['type']) {
+    case 'tpay_field' :
+    $products_array= _tpay_get_products_array();
+    $element['sku'] = array(
+      '#type' => 'select',
+      '#description'=> t('Select the equivalent TPay Product Name'),
+      '#title' => t('TPay Product Name'),
+      '#options' => $products_array,
+      '#default_value' => isset($items[$delta]['sku']) ? $items[$delta]['sku'] : '',
+    );
+    break;
+  }
+  return $element;
+}
+
+
+/**
+* Implements hook_field_is_empty().
+*/
+function tpay_field_is_empty($item, $field) {
+  switch ($field['type']) {
+    case 'tpay_product' :
+    if (empty($item['sku'])) {
+      return TRUE;
+    }
+    return FALSE;
+    break;
+  }
+
+}
+
+/**
+* Implements hook_field_formatter_info().
+*/
+function tpay_field_formatter_info() {
+  return array(
+    'tpay_product_default_formatter' => array(
+      'label' => t('Default'),
+      'field types' => array('tpay_product'),
+    ),
+  );
+}
+
+/**
+* Implements hook_field_formatter_view().
+*/
+function tpay_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  switch ($field['type']) {
+    case 'tpay_product' :
+    $products_array= _tpay_get_products_array();
+    $element = array();
+    switch ($display['type']) {
+      case 'tpay_product_default_formatter' :
+        foreach ($items as $delta => $item) {
+          if (isset($item['sku'])) {
+            $element[$delta]['#markup'] = 'Product SKU: '.$item['sku'].'<br>Product Name: '.$products_array[$item['sku']];
+          }
+        }
+        break;
+      }
+      break;
+    }
+    return $element;
+  }
+
+/**
+ * Returns a renderable form array with a single form element relevant to tpay.
+ * @param  string $element the form element to return. 'mobile' for a mobile number element.
+ * @return array
+ */
+ function _tpay_form_element($element,$vars = NULL) {
+   $form = array();
+   switch ($element) {
+     case 'mobile':
+     $tpay = _get_tpay_object();
+     $operators = $tpay->get_mobile_operators();
+     $operators_options = array();
+     foreach ($operators as $operator) {
+       $operators_options[$operator['operatorCode']] = $operator['countryName'] . " - " . $operator['operatorName'];
+     }
+     $products_array= _tpay_get_products_array();
+
+     $form['tpay_operator_code'] = array(
+       '#type' => 'select',
+       '#title' => t('Mobile Operator'),
+       '#options' => $operators_options,
+       '#default_value' => variable_get('tpay_operator_code', ''),
+       '#ajax' => array(
+         'callback' => 'tpay_price_callback',
+         'wrapper' => 'price_div',
+         'progress' => array(
+           'message' => t('Please wait ..'),
+         ),
+       ),
+       '#attributes' => array('class' => array('form-control')),
+
+     );
+     $form['tpay_mobile_number'] = array(
+       '#type' => 'textfield',
+       '#title' => t('Mobile Number'),
+       '#size' => 15,
+       '#default_value' => variable_get('tpay_mobile_number', ''),
+       '#required' => TRUE,
+       '#attributes' => array('class' => array('form-control')),
+     );
+
+     break;
+     case 'products_array_radios':
+     $products_array= _tpay_get_products_array('radios');
+     if ($vars == ""){
+       $form['tpay_product_sku'] = array(
+         '#type' => 'radios',
+         '#title' => t('Product Name'),
+         '#options' => $products_array,
+         '#default_value' => variable_get('tpay_product_sku', 6),
+         '#required' => TRUE,
+         '#ajax' => array(
+           'callback' => 'tpay_price_callback',
+           'wrapper' => 'price_div',
+         ),
+       );
+     }
+     else {
+       $form['tpay_product_sku'] = array(
+         '#type' => 'hidden',
+         '#value' => $vars,
+         '#required' => TRUE,
+       );
+     }
+     break;
+     case 'validation_pin':
+     $form['tpay_validation_pin'] = array(
+       '#type' => 'textfield',
+       '#title' => t('Verification Pin'),
+       '#size' => 15,
+       '#required' => TRUE,
+       '#attributes' => array('class' => array('form-control')),
+
+     );
+     break;
+     case 'signup_link':
+     $form['signup_link'] = array(
+       '#markup' => l(t('Don\'t have an account? Sign Up'), 'tpay/verify/signup').'<br />',
+     );
+     break;
+     case 'login_link':
+     $form['login_link'] = array(
+       '#markup' => l(t('Already have an account? Sign in'), 'tpay/verify/login').'<br />',
+     );
+     break;
+     case 'facebook_login':
+     $form['facebook_login_link'] = array(
+       '#markup' => '<a href="'.base_path().'user/simple-fb-connect?destination=tpay/verify">'.t('Facebook Signup/Login').'</a><br />',
+     );
+     break;
+     case 'submit':
+     $form['submit'] = array(
+       '#type' => 'submit',
+       '#value' => $vars,
+       '#attributes' => array('class' => array('btn btn-primary')),
+
+     );
+     break;
+   }
+   return $form;
+ }
+
+ /**
+  * Implements hook_views_api().
+  */
+ function tpay_views_api() {
+   return array('api' => 3.0);
+ }
+
+ /**
+ * Implements hook_content_subscrition_payment_info().
+ */
+ function tpay_content_subscrition_payment_info($nid) {
+   $fields = field_read_fields(array('type' => 'tpay_product'));
+   if(!empty($fields)){
+     foreach ($fields as $field => $field_name) {
+       $field_instance = field_read_instances(array('field_name' => $field));
+       $entity_type = $field_instance[0]['entity_type'];
+       if($entity_type =='node') {
+         $tpay_field_name = $field_instance[0]['field_name'];
+       }
+     }
+   }
+   if(!empty($tpay_field_name)){
+     $load_tpay_field = node_load($nid)->$tpay_field_name;
+
+     if(!empty($load_tpay_field)){
+       $tpay_product_path = $load_tpay_field['und'][0]['sku'];
+     }
+     if(isset($tpay_product_path)){
+       $options['tpay'] = array(
+         '#title' => t('Mobile'),
+         '#path' => 'tpay/subscribe/'.$tpay_product_path
+       );
+       return $options;
+     }
+   }
+   return false;
+ }

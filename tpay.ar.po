@@ -1,0 +1,391 @@
+# $Id$
+#
+# Arabic translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  tpay.admin.inc: n/a
+#  tpay.views.inc: n/a
+#  tpay.pages.inc: n/a
+#  tpay.module: n/a
+#  tpay.info: n/a
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2018-03-26 14:29+0200\n"
+"PO-Revision-Date: 2018-03-26 14:34+0200\n"
+"Last-Translator: Muhammed Mohsen <muhammedmohsen@kernel.blue>\n"
+"Language-Team: Arabic <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=((n==1)?(0):((n==0)?(1):((n==2)?(2):((((n"
+"%100)>=3)&&((n%100)<=10))?(3):((((n%100)>=11)&&((n%100)<=99))?(4):5)))));\n"
+"Language: ar\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#: tpay.admin.inc:18
+msgid "TPay Disclaimer"
+msgstr ""
+
+#: tpay.admin.inc:19
+msgid ""
+"e.g. To cancel your subscription, for [Operator Name] subscribers please "
+"send [Keyword] to [short code], To cancel from the site please go to "
+msgstr ""
+
+#: tpay.admin.inc:24
+msgid "TPay Server Configuration"
+msgstr ""
+
+#: tpay.admin.inc:30
+msgid "Operate in staging mode."
+msgstr ""
+
+#: tpay.admin.inc:35
+msgid "User name"
+msgstr "اسم المستخدم"
+
+#: tpay.admin.inc:39
+msgid "Your TPay account user name"
+msgstr "اسم المستخدم لحساب تي باي"
+
+#: tpay.admin.inc:43
+msgid "Public key"
+msgstr ""
+
+#: tpay.admin.inc:47
+msgid "Your TPay account public key"
+msgstr ""
+
+#: tpay.admin.inc:51
+msgid "Private key"
+msgstr ""
+
+#: tpay.admin.inc:55
+msgid "Your TPay account private key"
+msgstr ""
+
+#: tpay.admin.inc:59
+msgid "TPay Subscription Plan Configuration"
+msgstr ""
+
+#: tpay.admin.inc:60
+msgid "Using TPay Portal, Create subscription plan and copy its Info. here"
+msgstr ""
+
+#: tpay.admin.inc:66 tpay.views.inc:97
+msgid "Subscription Plan ID"
+msgstr ""
+
+#: tpay.admin.inc:67
+msgid "TPay subscription plan ID"
+msgstr ""
+
+#: tpay.admin.inc:74;75
+msgid "Subscription Plan Frequency"
+msgstr ""
+
+#: tpay.admin.inc:85
+msgid "Parking Period"
+msgstr ""
+
+#: tpay.admin.inc:86
+msgid "Free start Period for new users(without charging) in hours"
+msgstr ""
+
+#: tpay.admin.inc:93
+msgid "Select SMS Language"
+msgstr ""
+
+#: tpay.admin.inc:94
+msgid "SMS Language"
+msgstr ""
+
+#: tpay.admin.inc:105
+msgid "Auto renew Contract"
+msgstr ""
+
+#: tpay.admin.inc:110
+msgid "Send verfication SMS"
+msgstr ""
+
+#: tpay.pages.inc:17 tpay.views.inc:57
+msgid "Contract ID"
+msgstr "رقم الاشتراك"
+
+#: tpay.pages.inc:18
+msgid "Product"
+msgstr "المنتج"
+
+#: tpay.pages.inc:19
+msgid "Next Payment Date"
+msgstr "تاريخ الدفع القادم"
+
+#: tpay.pages.inc:20 tpay.views.inc:177
+msgid "Status"
+msgstr "الحالة"
+
+#: tpay.pages.inc:21 tpay.module:269
+msgid "Mobile Number"
+msgstr "رقم المحمول"
+
+#: tpay.pages.inc:68
+msgid "Actions"
+msgstr "الإجراءات"
+
+#: tpay.pages.inc:70
+msgid "Unsubscribe"
+msgstr "الغاء الاشتراك"
+
+#: tpay.pages.inc:79
+msgid "No Contracts Found"
+msgstr "لا توجد اشتراكات"
+
+#: tpay.pages.inc:89
+msgid "Submit"
+msgstr "تأكيد"
+
+#: tpay.pages.inc:124
+msgid "You have successfully unsubscribed"
+msgstr "لقد قمت بالالغاء الاشتراك بنجاح"
+
+#: tpay.pages.inc:127;363;602;618
+msgid "Error has occurred"
+msgstr "حدث خطأ"
+
+#: tpay.pages.inc:182
+msgid "daily"
+msgstr "يوميا"
+
+#: tpay.pages.inc:185
+msgid "weekly"
+msgstr "أسبوعيا"
+
+#: tpay.pages.inc:188
+msgid "monthly"
+msgstr "شهريا"
+
+#: tpay.pages.inc:191
+msgid "yearly"
+msgstr "سنويا"
+
+#: tpay.pages.inc:196;246
+msgid ""
+"You will subscribe in !product_name with !price !currency_code !"
+"subscription_period."
+msgstr ""
+"سوف تقوم بالاشتراك في !product_name بـ !price !currency_code !"
+"subscription_period"
+
+#: tpay.pages.inc:205 tpay.module:31
+msgid "Subscribe"
+msgstr "اشترك"
+
+#: tpay.pages.inc:262
+msgid "You already have an active contract"
+msgstr ""
+
+#: tpay.pages.inc:354;616
+msgid "Verification Pin had been sent to "
+msgstr "تم ارسال كود تفعيل الاشتراك إلي "
+
+#: tpay.pages.inc:395 tpay.module:39
+msgid "Confirm Subscription"
+msgstr "تأكيد الاشتراك"
+
+#: tpay.pages.inc:401;424
+msgid "Email Address"
+msgstr "البريد الالكتروني"
+
+#: tpay.pages.inc:437
+msgid "Password"
+msgstr "كلمة المرور"
+
+#: tpay.pages.inc:448
+msgid "Resend Verification Pin"
+msgstr "اعادة ارسال كود التفعيل"
+
+#: tpay.pages.inc:472
+msgid "Invalid information, Please try again"
+msgstr "معلومات خاطئة، من فضلك حاول مرة أخري"
+
+#: tpay.pages.inc:478
+msgid "Email is already registered"
+msgstr "البريد الالكتروني مسجل بالفعل"
+
+#: tpay.pages.inc:483
+msgid "Invalid Email Address, Please provide valid email address"
+msgstr ""
+
+#: tpay.pages.inc:595
+msgid "You have successfully subscribed"
+msgstr "لقد قمت بالاشتراك بنجاح"
+
+#: tpay.pages.inc:639;720 tpay.module:13
+msgid "TPay"
+msgstr ""
+
+#: tpay.pages.inc:639
+msgid "TPAY Notification"
+msgstr ""
+
+#: tpay.pages.inc:720
+msgid "Access Denied"
+msgstr ""
+
+#: tpay.views.inc:14;17
+msgid "TPay Subscriptions"
+msgstr ""
+
+#: tpay.views.inc:29
+msgid "UID"
+msgstr ""
+
+#: tpay.views.inc:30
+msgid "TPay User ID "
+msgstr ""
+
+#: tpay.views.inc:36
+msgid "User"
+msgstr "المستخدم"
+
+#: tpay.views.inc:37
+msgid "User Data"
+msgstr ""
+
+#: tpay.views.inc:41
+msgid "user"
+msgstr "مستخدم"
+
+#: tpay.views.inc:58
+msgid "TPay Contract ID"
+msgstr ""
+
+#: tpay.views.inc:77
+msgid "Mobie Number"
+msgstr ""
+
+#: tpay.views.inc:78
+msgid "User Mobile Number "
+msgstr ""
+
+#: tpay.views.inc:98
+msgid "TPay Subscription Plan ID"
+msgstr ""
+
+#: tpay.views.inc:126
+msgid "Product SKU"
+msgstr ""
+
+#: tpay.views.inc:127
+msgid "TPay Product ID/SKU"
+msgstr ""
+
+#: tpay.views.inc:133;141 tpay.module:124
+msgid "TPay Products"
+msgstr ""
+
+#: tpay.views.inc:134
+msgid "entities associated with TPay as Products"
+msgstr ""
+
+#: tpay.views.inc:157
+msgid "Payment Date"
+msgstr ""
+
+#: tpay.views.inc:158
+msgid "Initial tpay payment date"
+msgstr ""
+
+#: tpay.views.inc:178
+msgid "Status of subscriptions"
+msgstr ""
+
+#: tpay.module:22
+msgid "Mobile Subscription"
+msgstr "اشتراكات الموبايل"
+
+#: tpay.module:47
+msgid "Subscription Notification"
+msgstr ""
+
+#: tpay.module:63
+msgid "Administer TPay Settings"
+msgstr ""
+
+#: tpay.module:64
+msgid "Administer TPay settings"
+msgstr ""
+
+#: tpay.module:67;68
+msgid "Subscribe to TPay plans"
+msgstr ""
+
+#: tpay.module:123
+msgid "TPay Product"
+msgstr ""
+
+#: tpay.module:137
+msgid "Select list"
+msgstr "لائحة الخيارات"
+
+#: tpay.module:175
+msgid "Select the equivalent TPay Product Name"
+msgstr ""
+
+#: tpay.module:176
+msgid "TPay Product Name"
+msgstr "اسم منتج تي باي"
+
+#: tpay.module:207
+msgid "Default"
+msgstr "الافتراضي"
+
+#: tpay.module:254
+msgid "Mobile Operator"
+msgstr "شبكة المحمول"
+
+#: tpay.module:261
+msgid "Please wait .."
+msgstr "من فضلك انتظر"
+
+#: tpay.module:282
+msgid "Product Name"
+msgstr "اسم المنتج"
+
+#: tpay.module:303
+msgid "Verification Pin"
+msgstr "كود التفعيل"
+
+#: tpay.module:312
+msgid "Don't have an account? Sign Up"
+msgstr "ليس لديك اشتراك ؟ سجل اشتراك "
+
+#: tpay.module:317
+msgid "Already have an account? Sign in"
+msgstr "مشترك بالفعل؟ سجل الدخول"
+
+#: tpay.module:322
+msgid "Facebook Signup/Login"
+msgstr "تسجيل/تسجيل الدخول بالفيسبوك"
+
+#: tpay.module:366
+msgid "Mobile"
+msgstr "محمول"
+
+#: tpay.module:14
+msgid "Configuration for TPay module"
+msgstr "اعدادات وحدة تي باي "
+
+#: tpay.info:0
+msgid "TPay Integration"
+msgstr ""
+
+#: tpay.info:0
+msgid "Provides integration with TPay services"
+msgstr "لدعم الدمج مع خدمات تي باي"
+
+#: tpay.info:0
+msgid "Other"
+msgstr "أخرى"

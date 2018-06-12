@@ -1,0 +1,113 @@
+<?php
+
+function tpay_schema() {
+  $schema['tpay_contracts'] = array(
+    'description' => 'Subscription Contract ID from TPay API',
+    'fields' => array(
+      'contract_id' => array(
+        'description' => 'TODO: please describe this field!',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+      'customer_account_number' => array(
+        'description' => 'equivalent to uid',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+      'msisdn' => array(
+        'description' => 'User Mobile Number',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+      'operator_code' => array(
+        'description' => 'combination of MCC and MNC',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+      'subscription_plan_id' => array(
+        'description' => 'Subscription plan ID that will be linked to this contract',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+      'product_sku' => array(
+        'description' => 'Product SKU',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+      'product_catalog_name' => array(
+        'description' => 'Product catalog contains products in this contract',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+      'payment_transaction_status_code' => array(
+        'description' => 'In case of success, this should have the value of "PaymentCompletedSuccessfully"',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+      'transaction_id' => array(
+        'description' => 'it contains value in case of a successful transaction for Initial Payment or after executing the recurring charging',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+      'payment_date' => array(
+        'description' => 'Last Payment Date',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+      'next_payment_date' => array(
+        'description' => 'Next Payment Date',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+      'amount_charged' => array(
+        'description' => 'Amount of money charged',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+      'currency_code' => array(
+        'description' => 'TODO: please describe this field!',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+      'status' => array(
+        'description' => 'Status of the subscription contract',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+    ),
+    'unique keys' => array(
+      'contract_id' => array('contract_id')
+    ),
+  );
+
+
+  return $schema;
+}
+
+/**
+* Implements hook_field_schema().
+*/
+function tpay_field_schema($field) {
+  return array(
+    'columns' => array(
+      'sku' => array(
+        'type' => 'int',
+        'not null' => FALSE,
+      ),
+    ),
+  );
+}
